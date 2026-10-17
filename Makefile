@@ -2,19 +2,23 @@ CC = gcc
 CFLAGS = -Wall -Wextra -O2 -I.
 
 SRCS = $(wildcard src/*.c)
-OBJS = $(SRCS:.c=.o)
-
+OBJS = $(patsubst src/%.c,bin/%.o,$(SRCS))
 LIB = libadt.a
+
+SRC_DIR = src
+BIN_DIR = bin
+
 
 all: $(LIB)
 
 $(LIB): $(OBJS)
 	ar rcs $@ $^
 
-%.o: %.c
+$(BIN_DIR)/%.o: $(SRC_DIR)/%.c
+	mkdir -p $(BIN_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(LIB)
+	rm -rf $(BIN_DIR) $(OBJS) $(LIB)
 
 .PHONY: all clean

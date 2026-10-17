@@ -3,6 +3,17 @@ ADT - abstract data types
 
 Implementation of data structures and abstract data types in C.
 
+Build
+-----
+
+Run make to compile and build the library archive `libadt.a`.
+
+```sh
+make
+```
+
+Run `make clean` to remove the object files and library archive.
+
 01 - LIST
 =========
 
