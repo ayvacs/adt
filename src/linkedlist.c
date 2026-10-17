@@ -2,17 +2,43 @@
 
 #include <stdlib.h>
 
-void linkedlist_init(LinkedList *list) {
-    if (list == NULL)
-        return;
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
 
-    // empty list: no endpoints, size of zero
+struct List {
+    Node *head;
+    Node *tail;
+    size_t size;
+};
+
+List *list_create(void) {
+    List *list = malloc(sizeof(*list));
+    if (list == NULL)
+        return NULL;
+
     list->head = NULL;
     list->tail = NULL;
     list->size = 0;
+    return list;
 }
 
-int addfront(LinkedList *list, int value) {
+void list_destroy(List *list) {
+    if (list == NULL)
+        return;
+
+    Node *node = list->head;
+    while (node != NULL) {
+        Node *next = node->next;
+        free(node);
+        node = next;
+    }
+
+    free(list);
+}
+
+int list_add_front(List *list, int value) {
     if (list == NULL)
         return 0;
 
@@ -32,7 +58,7 @@ int addfront(LinkedList *list, int value) {
     return 1;
 }
 
-int addend(LinkedList *list, int value) {
+int list_add_end(List *list, int value) {
     if (list == NULL)
         return 0;
 
@@ -42,7 +68,7 @@ int addend(LinkedList *list, int value) {
 
     node->data = value;
     node->next = NULL;
-    
+
     // link after the existing tail, or set as the head for an empty list
     if (list->tail == NULL)
         list->head = node;
@@ -54,14 +80,14 @@ int addend(LinkedList *list, int value) {
     return 1;
 }
 
-int removefront(LinkedList *list, int *value) {
+int list_remove_front(List *list, int *value) {
     if (list == NULL || list->head == NULL)
         return 0;
 
     Node *node = list->head;
     if (value != NULL)
         *value = node->data;
-    
+
     // removing the head leaves both endpoints empty
     list->head = node->next;
     if (list->head == NULL)
@@ -72,7 +98,7 @@ int removefront(LinkedList *list, int *value) {
     return 1;
 }
 
-int removeend(LinkedList *list, int *value) {
+int list_remove_end(List *list, int *value) {
     if (list == NULL || list->tail == NULL)
         return 0;
 
@@ -84,7 +110,7 @@ int removeend(LinkedList *list, int *value) {
     if (list->head == node) {
         list->head = NULL;
         list->tail = NULL;
-    
+
     // case 2: more than one-item list
     } else {
         Node *previous = list->head;
@@ -99,11 +125,11 @@ int removeend(LinkedList *list, int *value) {
     return 1;
 }
 
-int removeindex(LinkedList *list, size_t index, int *value) {
+int list_remove_index(List *list, size_t index, int *value) {
     if (list == NULL || index >= list->size)
         return 0;
     if (index == 0)
-        return removefront(list, value);
+        return list_remove_front(list, value);
 
     // stop at the node before the one being removed
     Node *previous = list->head;
@@ -119,4 +145,10 @@ int removeindex(LinkedList *list, size_t index, int *value) {
     list->size--;
     free(node);
     return 1;
+}
+
+size_t list_size(const List *list) {
+    if (list == NULL)
+        return 0;
+    return list->size;
 }

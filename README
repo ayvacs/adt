@@ -1,29 +1,44 @@
 ADT - abstract data types
 =========================
 
-implementation of data structures
-and abstract data types in C
+Implementation of data structures and abstract data types in C.
 
-01 - LINKEDLIST
-===============
+01 - LIST
+=========
 
-typedef struct LinkedList {
-    Node *head;
-    Node *tail;
-    size_t size;
-} LinkedList;
+The List ADT stores integer values in order. It is implemented with a
+singly-linked list. The node and list structure are private to the library;
+use the functions in libadt.h to work with a list.
 
-void linkedlist_init(LinkedList *list);  Initialize a list
+Create and destroy
+------------------
 
-int addfront(LinkedList *list,           Add a value at either end of the list
-    int value);                          Return 1 on success, 0 on failure
-int addend(LinkedList *list,
-    int value);
+List *list_create(void);       Create an empty list. Returns NULL on failure.
+void list_destroy(List *list); Free the list and all of its items.
 
-int removefront(LinkedList *list,        Remove from either end.
-    int *value);                         If *value is defined, store the removed value there.
-int removeend(LinkedList *list,          Return 1 if item successfully removed, or 0 on failure
-    int *value);
+Add values
+----------
 
-int removeindex(LinkedList *list,        Remove the index.
-    size_t index, int *value);           Return 1 if item successfully removed, or 0 on failure
+int list_add_front(List *list, int value);  Add a value at the front.
+int list_add_end(List *list, int value);    Add a value at the end.
+
+Both functions return 1 on success and 0 if the list is NULL or memory
+allocation fails.
+
+Remove values
+-------------
+
+int list_remove_front(List *list, int *value);       Remove the first value.
+int list_remove_end(List *list, int *value);         Remove the last value.
+int list_remove_index(List *list, size_t index, int *value);
+
+The index is zero-based. If value is not NULL, the removed value is stored
+there. These functions return 1 if an item was removed and 0 if the list is
+NULL, empty, or the index is out of range.
+
+List size
+---------
+
+size_t list_size(const List *list);  Return the number of values in the list.
+
+list_size returns 0 when list is NULL.

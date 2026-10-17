@@ -3,44 +3,39 @@
 
 #include <stddef.h>
 
-typedef struct Node {
-    int data;
-    struct Node *next;
-} Node;
-
-
-typedef struct LinkedList {
-    Node *head;
-    Node *tail;
-    size_t size;
-} LinkedList;
-
-/* Initialize a list before using any of its operations. */
+typedef struct List List;
 
 /**
- * Initialize a list
+ * Create an empty list.
+ * Return a pointer to the list, or NULL on failure.
  */
-void linkedlist_init(LinkedList *list);
+List *list_create(void);
 
 /**
- * Add a value at either end of the list
- * Return 1 on success, 0 on failure
+ * Free the list and all of its items.
  */
-int addfront(LinkedList *list, int value);
-int addend(LinkedList *list, int value);
+void list_destroy(List *list);
 
 /**
- * Remove from either end.
- * If *value is defined, store the removed value there.
- * Return 1 if item successfully removed, or 0 on failure
+ * Add a value at the front or end of the list.
+ * Return 1 on success, or 0 on failure.
  */
-int removefront(LinkedList *list, int *value);
-int removeend(LinkedList *list, int *value);
+int list_add_front(List *list, int value);
+int list_add_end(List *list, int value);
 
 /**
- * Remove the index.
- * Return 1 if item successfully removed, or 0 on failure
+ * Remove a value from the front, end, or zero-based index.
+ * If value is not NULL, store the removed value there.
+ * Return 1 if an item was removed, or 0 if the list is empty,
+ * the index is out of range, or the list is NULL.
  */
-int removeindex(LinkedList *list, size_t index, int *value);
+int list_remove_front(List *list, int *value);
+int list_remove_end(List *list, int *value);
+int list_remove_index(List *list, size_t index, int *value);
+
+/**
+ * Return the number of items in the list.
+ */
+size_t list_size(const List *list);
 
 #endif
