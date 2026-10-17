@@ -1,0 +1,29 @@
+ADT - abstract data types
+=========================
+
+implementation of data structures
+and abstract data types in C
+
+01 - LINKEDLIST
+===============
+
+typedef struct LinkedList {
+    Node *head;
+    Node *tail;
+    size_t size;
+} LinkedList;
+
+void linkedlist_init(LinkedList *list);  Initialize a list
+
+int addfront(LinkedList *list,           Add a value at either end of the list
+    int value);                          Return 1 on success, 0 on failure
+int addend(LinkedList *list,
+    int value);
+
+int removefront(LinkedList *list,        Remove from either end.
+    int *value);                         If *value is defined, store the removed value there.
+int removeend(LinkedList *list,          Return 1 if item successfully removed, or 0 on failure
+    int *value);
+
+int removeindex(LinkedList *list,        Remove the index.
+    size_t index, int *value);           Return 1 if item successfully removed, or 0 on failure

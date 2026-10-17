@@ -23,7 +23,7 @@ typedef struct LinkedList {
 void linkedlist_init(LinkedList *list);
 
 /**
- * At a value at either end of the list
+ * Add a value at either end of the list
  * Return 1 on success, 0 on failure
  */
 int addfront(LinkedList *list, int value);
